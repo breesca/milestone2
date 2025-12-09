@@ -5,8 +5,10 @@ from app.models import User, Goal
 @pytest.fixture
 def app_instance():
     app = create_app()
+    # Use an in-memory SQLite DB just for tests
     app.config.update(
         TESTING=True,
+        SQLALCHEMY_DATABASE_URI="sqlite:///:memory:",
         WTF_CSRF_ENABLED=False,
     )
     with app.app_context():
@@ -14,10 +16,6 @@ def app_instance():
         yield app
         db.session.remove()
         db.drop_all()
-
-@pytest.fixture
-def client(app_instance):
-    return app_instance.test_client()
 
 def test_user_goal_relationship(app_instance):
     with app_instance.app_context():

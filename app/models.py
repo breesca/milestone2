@@ -1,7 +1,6 @@
-from datetime import datetime
-
-from flask_login import UserMixin
 from . import db, login_manager
+from flask_login import UserMixin
+from datetime import datetime
 
 group_members = db.Table(
     "group_members",
@@ -9,17 +8,13 @@ group_members = db.Table(
     db.Column("group_id", db.Integer, db.ForeignKey("study_group.id"), primary_key=True),
 )
 
-
 class User(UserMixin, db.Model):
-    __tablename__ = "user"
-
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(50), default="student")
 
     goals = db.relationship("Goal", backref="owner", lazy=True)
-
     groups = db.relationship(
         "StudyGroup",
         secondary=group_members,
@@ -29,21 +24,7 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f"<User {self.email}>"
 
-
-class Course(db.Model):
-    __tablename__ = "course"
-
-    id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String(32), nullable=False)
-    title = db.Column(db.String(255), nullable=False)
-
-    def __repr__(self):
-        return f"<Course {self.code}>"
-
-
 class StudyGroup(db.Model):
-    __tablename__ = "study_group"
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=True)
@@ -59,10 +40,7 @@ class StudyGroup(db.Model):
     def __repr__(self):
         return f"<StudyGroup {self.name}>"
 
-
 class Goal(db.Model):
-    __tablename__ = "goal"
-
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     week = db.Column(db.String(20), nullable=True)  # e.g. "Week 3"
@@ -77,10 +55,7 @@ class Goal(db.Model):
     def __repr__(self):
         return f"<Goal {self.title} for user {self.user_id}>"
 
-
 class ProgressUpdate(db.Model):
-    __tablename__ = "progress_update"
-
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -90,10 +65,8 @@ class ProgressUpdate(db.Model):
     def __repr__(self):
         return f"<ProgressUpdate {self.id}>"
 
-
 @login_manager.user_loader
-def load_user(user_id: str):
-    """Required by Flask-Login to load a user from the session."""
+def load_user(user_id):
     try:
         return User.query.get(int(user_id))
     except Exception:

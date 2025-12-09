@@ -1,18 +1,29 @@
 {% extends "base.html" %}
-
 {% block content %}
-  <h1>Dashboard</h1>
+  <h1>Your Weekly Goals</h1>
 
-  {% if goals %}
-    <ul>
-      {% for goal in goals %}
-        <li>
-          {{ goal.title }}{% if goal.week %} — {{ goal.week }}{% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>You don’t have any goals yet.</p>
-  {% endif %}
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-field">
+      {{ form.title.label }}<br>
+      {{ form.title(class="input") }}
+      {% for err in form.title.errors %}<div class="error">{{ err }}</div>{% endfor %}
+    </div>
+    <div class="form-field">
+      {{ form.week.label }}<br>
+      {{ form.week(class="input") }}
+      {% for err in form.week.errors %}<div class="error">{{ err }}</div>{% endfor %}
+    </div>
+    {{ form.submit(class="btn") }}
+  </form>
+
+  <h2>Existing Goals</h2>
+  <ul>
+    {% for goal in goals %}
+      <li>{{ goal.week or "Week" }}: {{ goal.title }}</li>
+    {% else %}
+      <li>No goals yet — add one above!</li>
+    {% endfor %}
+  </ul>
 {% endblock %}
 

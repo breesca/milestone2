@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-
 {% block content %}
-  <h1>Welcome</h1>
-  <p>This is the LMS stub home page. Use the nav to explore pages.</p>
+  <h1>Welcome to StudyBuddy</h1>
+  <p>A place where you can set your goals and study with friends!</p>
+  <a class="btn" href="{{ url_for('auth.login') }}">Try the Login Form</a>
 {% endblock %}
 

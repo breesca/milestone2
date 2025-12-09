@@ -1,16 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}StudyBuddy{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <meta charset="utf-8" />
+  <title>{{ title or "StudyBuddy" }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet" />
 </head>
 <body>
   <nav class="nav">
     <a href="{{ url_for('main.index') }}">Home</a>
     <a href="{{ url_for('main.feature') }}">Feature</a>
-    <a href="{{ url_for('auth.login') }}">Login</a>
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+      <span style="color:white;margin-left:auto;">{{ current_user.email }}</span>
+      <a href="{{ url_for('auth.logout') }}">Logout</a>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}">Login</a>
+      <a href="{{ url_for('auth.register') }}">Register</a>
+    {% endif %}
   </nav>
 
   <main class="container">
@@ -27,3 +34,4 @@
   </main>
 </body>
 </html>
+
