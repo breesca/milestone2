@@ -5,7 +5,7 @@ from app.models import User, Goal
 @pytest.fixture
 def app_instance():
     app = create_app()
-    # Use an in-memory SQLite DB just for tests
+
     app.config.update(
         TESTING=True,
         SQLALCHEMY_DATABASE_URI="sqlite:///:memory:",
