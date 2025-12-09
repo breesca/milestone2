@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Dashboard</h1>
+
+  {% if goals %}
+    <ul>
+      {% for goal in goals %}
+        <li>
+          {{ goal.title }}{% if goal.week %} — {{ goal.week }}{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You don’t have any goals yet.</p>
+  {% endif %}
+{% endblock %}
+
