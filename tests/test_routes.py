@@ -33,7 +33,7 @@ def test_login_and_dashboard():
         db.session.commit()
         user_id = user.id
 
-    # simulate logged-in session
+
     with client.session_transaction() as sess:
         sess["_user_id"] = str(user_id)
 
